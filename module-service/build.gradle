@@ -1,0 +1,11 @@
+plugins {
+    id 'java-library'
+}
+
+dependencies {
+    api project(':module-repository')
+
+    annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
+    implementation "org.mapstruct:mapstruct:$mapstructVersion"
+    implementation 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+}

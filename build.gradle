@@ -1,0 +1,39 @@
+plugins {
+    id 'java-base'
+    id 'io.freefair.lombok' version "$lombokVersion"
+    id "org.springframework.boot" version "$springBootVersion"
+    id 'io.spring.dependency-management' version "$springDependencyManagementVersion"
+}
+
+wrapper {
+    gradleVersion = gradlewVersion
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'io.freefair.lombok'
+    apply plugin: "org.springframework.boot"
+    apply plugin: 'io.spring.dependency-management'
+
+    group = 'com.mjc.school'
+
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter'
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation "com.tngtech.archunit:archunit-junit5:$archUnitVersion"
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}

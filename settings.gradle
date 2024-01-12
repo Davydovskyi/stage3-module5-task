@@ -1,0 +1,5 @@
+rootProject.name = 'stage3-module5-task'
+
+include 'module-repository'
+include 'module-service'
+include 'module-web'

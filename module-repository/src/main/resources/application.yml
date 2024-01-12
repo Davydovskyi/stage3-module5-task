@@ -1,0 +1,23 @@
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:5432/mjc_project
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        hbm2ddl:
+          auto: validate
+        jdbc:
+          fetch_size: 100
+          batch_size: 100
+  sql:
+    init:
+      mode: always
