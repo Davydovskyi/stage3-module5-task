@@ -7,10 +7,10 @@ import com.mjc.school.controller.AuthorController;
 import com.mjc.school.service.AuthorService;
 import com.mjc.school.service.dto.author.AuthorDtoRequest;
 import com.mjc.school.service.dto.author.AuthorDtoResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Pageable;
@@ -24,19 +24,19 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/authors")
-@Api("Operations for creating, updating, retrieving and deleting author in the application")
+@Tag(name = "Authors", description = "Operations for creating, updating, retrieving and deleting author in the application")
 public class AuthorRestController implements AuthorController {
     private final AuthorService authorService;
     private final ObjectMapper objectMapper;
 
     @Override
     @GetMapping()
-    @ApiOperation(value = "View all authors", response = List.class)
+    @Operation(summary = "View all authors")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved all authors"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 500, message = "Application failed to process the request")}
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved all authors"),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "500", description = "Application failed to process the request")}
     )
     public List<AuthorDtoResponse> readAll(Pageable pageable) {
         return authorService.readAll(pageable);
@@ -44,13 +44,13 @@ public class AuthorRestController implements AuthorController {
 
     @GetMapping("/{id}")
     @Override
-    @ApiOperation(value = "Retrieve specific author with the supplied id", response = AuthorDtoResponse.class)
+    @Operation(summary = "Retrieve specific author with the supplied id")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved the author with the supplied id"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
-            @ApiResponse(code = 500, message = "Application failed to process the request")}
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the author with the supplied id"),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "404", description = "The resource you were trying to reach is not found"),
+            @ApiResponse(responseCode = "500", description = "Application failed to process the request")}
     )
     public AuthorDtoResponse readById(@PathVariable Long id) {
         return authorService.readById(id)
@@ -60,13 +60,13 @@ public class AuthorRestController implements AuthorController {
     @Override
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    @ApiOperation(value = "Create an author", response = AuthorDtoResponse.class)
+    @Operation(summary = "Create an author")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully created an author"),
-            @ApiResponse(code = 400, message = "The request parameters are invalid"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 500, message = "Application failed to process the request")}
+            @ApiResponse(responseCode = "201", description = "Successfully created an author"),
+            @ApiResponse(responseCode = "400", description = "The request parameters are invalid"),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "500", description = "Application failed to process the request")}
     )
     public AuthorDtoResponse create(@RequestBody @Validated AuthorDtoRequest createRequest) {
         return authorService.create(createRequest);
@@ -74,13 +74,13 @@ public class AuthorRestController implements AuthorController {
 
     @Override
     @PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
-    @ApiOperation(value = "Update author information", response = AuthorDtoResponse.class)
+    @Operation(summary = "Update author information")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully updated author information"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
-            @ApiResponse(code = 500, message = "Application failed to process the request")}
+            @ApiResponse(responseCode = "200", description = "Successfully updated author information"),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "404", description = "The resource you were trying to reach is not found"),
+            @ApiResponse(responseCode = "500", description = "Application failed to process the request")}
     )
     public AuthorDtoResponse patch(@PathVariable Long id, @RequestBody JsonPatch patch) {
         return authorService.readById(id)
@@ -93,14 +93,14 @@ public class AuthorRestController implements AuthorController {
 
     @Override
     @PutMapping("/{id}")
-    @ApiOperation(value = "Update author information", response = AuthorDtoResponse.class)
+    @Operation(summary = "Update author information")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully updated author information"),
-            @ApiResponse(code = 400, message = "The request parameters are invalid"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
-            @ApiResponse(code = 500, message = "Application failed to process the request")}
+            @ApiResponse(responseCode = "200", description = "Successfully updated author information"),
+            @ApiResponse(responseCode = "400", description = "The request parameters are invalid"),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "404", description = "The resource you were trying to reach is not found"),
+            @ApiResponse(responseCode = "500", description = "Application failed to process the request")}
     )
     public AuthorDtoResponse update(@PathVariable Long id, @RequestBody @Validated AuthorDtoRequest updateRequest) {
         return authorService.update(id, updateRequest)
@@ -110,13 +110,13 @@ public class AuthorRestController implements AuthorController {
     @Override
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ApiOperation(value = "Deletes specific author with the supplied id")
+    @Operation(summary = "Deletes specific author with the supplied id")
     @ApiResponses(value = {
-            @ApiResponse(code = 204, message = "Successfully deletes the specific author"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
-            @ApiResponse(code = 500, message = "Application failed to process the request")}
+            @ApiResponse(responseCode = "204", description = "Successfully deletes the specific author"),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "404", description = "The resource you were trying to reach is not found"),
+            @ApiResponse(responseCode = "500", description = "Application failed to process the request")}
     )
     public void deleteById(@PathVariable Long id) {
         authorService.deleteById(id);

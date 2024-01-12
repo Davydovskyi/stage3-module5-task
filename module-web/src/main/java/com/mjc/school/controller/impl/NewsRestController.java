@@ -15,10 +15,10 @@ import com.mjc.school.service.dto.news.NewsDtoResponse;
 import com.mjc.school.service.dto.news.NewsQueryParams;
 import com.mjc.school.service.dto.tag.TagDtoResponse;
 import com.mjc.school.service.validator.group.CreateAction;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +33,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/news")
-@Api("Operations for creating, updating, retrieving and deleting news in the application")
+@Tag(name = "News", description = "Operations for creating, updating, retrieving and deleting news in the application")
 public class NewsRestController implements NewsController {
     private final NewsService newsService;
     private final AuthorService authorService;
@@ -43,12 +43,12 @@ public class NewsRestController implements NewsController {
 
     @Override
     @GetMapping
-    @ApiOperation(value = "View all news", response = List.class)
+    @Operation(summary = "View all news")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved all news"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 500, message = "Application failed to process the request")}
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved all news"),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "500", description = "Application failed to process the request")}
     )
     public List<NewsDtoResponse> readAll(Pageable pageable) {
         return newsService.readAll(pageable);
@@ -56,13 +56,13 @@ public class NewsRestController implements NewsController {
 
     @GetMapping("/{id}")
     @Override
-    @ApiOperation(value = "Retrieve specific news with the supplied id", response = NewsDtoResponse.class)
+    @Operation(summary = "Retrieve specific news with the supplied id")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved the news with the supplied id"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
-            @ApiResponse(code = 500, message = "Application failed to process the request")}
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the news with the supplied id"),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "404", description = "The resource you were trying to reach is not found"),
+            @ApiResponse(responseCode = "500", description = "Application failed to process the request")}
     )
     public NewsDtoResponse readById(@PathVariable Long id) {
         return newsService.readById(id)
@@ -72,13 +72,13 @@ public class NewsRestController implements NewsController {
     @Override
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    @ApiOperation(value = "Create a news", response = NewsDtoResponse.class)
+    @Operation(summary = "Create a news")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully created a news"),
-            @ApiResponse(code = 400, message = "The request parameters are invalid"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 500, message = "Application failed to process the request")}
+            @ApiResponse(responseCode = "201", description = "Successfully created a news"),
+            @ApiResponse(responseCode = "400", description = "The request parameters are invalid"),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "500", description = "Application failed to process the request")}
     )
     public NewsDtoResponse create(@RequestBody @Validated({CreateAction.class, Default.class}) NewsDtoRequest dtoRequest) {
         return newsService.create(dtoRequest);
@@ -86,14 +86,14 @@ public class NewsRestController implements NewsController {
 
     @Override
     @PutMapping("/{id}")
-    @ApiOperation(value = "Update news information", response = NewsDtoResponse.class)
+    @Operation(summary = "Update news information")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully updated news information"),
-            @ApiResponse(code = 400, message = "The request parameters are invalid"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
-            @ApiResponse(code = 500, message = "Application failed to process the request")}
+            @ApiResponse(responseCode = "200", description = "Successfully updated news information"),
+            @ApiResponse(responseCode = "400", description = "The request parameters are invalid"),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "404", description = "The resource you were trying to reach is not found"),
+            @ApiResponse(responseCode = "500", description = "Application failed to process the request")}
     )
     public NewsDtoResponse update(@PathVariable Long id,
                                   @RequestBody @Validated NewsDtoRequest dtoRequest) {
@@ -103,13 +103,13 @@ public class NewsRestController implements NewsController {
 
     @Override
     @PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
-    @ApiOperation(value = "Update news information", response = NewsDtoResponse.class)
+    @Operation(summary = "Update news information")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully updated news information"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
-            @ApiResponse(code = 500, message = "Application failed to process the request")}
+            @ApiResponse(responseCode = "200", description = "Successfully updated news information"),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "404", description = "The resource you were trying to reach is not found"),
+            @ApiResponse(responseCode = "500", description = "Application failed to process the request")}
     )
     public NewsDtoResponse patch(@PathVariable Long id, @RequestBody JsonPatch patch) {
         return newsService.readById(id)
@@ -123,13 +123,13 @@ public class NewsRestController implements NewsController {
     @Override
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ApiOperation(value = "Deletes specific news with the supplied id")
+    @Operation(summary = "Deletes specific news with the supplied id")
     @ApiResponses(value = {
-            @ApiResponse(code = 204, message = "Successfully deletes the specific news"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
-            @ApiResponse(code = 500, message = "Application failed to process the request")}
+            @ApiResponse(responseCode = "204", description = "Successfully deletes the specific news"),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "404", description = "The resource you were trying to reach is not found"),
+            @ApiResponse(responseCode = "500", description = "Application failed to process the request")}
     )
     public void deleteById(@PathVariable Long id) {
         newsService.deleteById(id);
@@ -137,12 +137,12 @@ public class NewsRestController implements NewsController {
 
     @Override
     @GetMapping("/filter")
-    @ApiOperation(value = "Retrieve news with the supplied filter", response = NewsDtoResponse.class)
+    @Operation(summary = "Retrieve news with the supplied filter")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved the news with the supplied filter"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 500, message = "Application failed to process the request")
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the news with the supplied filter"),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "500", description = "Application failed to process the request")
     })
     public List<NewsDtoResponse> readAllByFilter(NewsQueryParams filter, Pageable pageable) {
         return newsService.readAllByFilter(filter, pageable);
@@ -150,12 +150,12 @@ public class NewsRestController implements NewsController {
 
     @Override
     @GetMapping("/{id}/author")
-    @ApiOperation(value = "Retrieve author with the supplied news id", response = AuthorDtoResponse.class)
+    @Operation(summary = "Retrieve author with the supplied news id")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved the author with the supplied news id"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 500, message = "Application failed to process the request")
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the author with the supplied news id"),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "500", description = "Application failed to process the request")
     })
     public AuthorDtoResponse readAuthorByNewsId(@PathVariable Long id) {
         return authorService.readByNewsId(id)
@@ -164,12 +164,12 @@ public class NewsRestController implements NewsController {
 
     @Override
     @GetMapping("/{id}/tags")
-    @ApiOperation(value = "Retrieve tags with the supplied news id", response = List.class)
+    @Operation(summary = "Retrieve tags with the supplied news id")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved the tags with the supplied news id"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 500, message = "Application failed to process the request")
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the tags with the supplied news id"),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "500", description = "Application failed to process the request")
     })
     public List<TagDtoResponse> readAllTagsByNewsId(@PathVariable Long id) {
         return tagService.readAllByNewsId(id);
@@ -177,12 +177,12 @@ public class NewsRestController implements NewsController {
 
     @Override
     @GetMapping("/{id}/comments")
-    @ApiOperation(value = "Retrieve comments with the supplied news id", response = List.class)
+    @Operation(summary = "Retrieve comments with the supplied news id")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved the comments with the supplied news id"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 500, message = "Application failed to process the request")
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the comments with the supplied news id"),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "500", description = "Application failed to process the request")
     })
     public List<CommentDtoResponse> readAllCommentsByNewsId(@PathVariable Long id) {
         return commentService.readAllByNewsId(id);

@@ -2,7 +2,6 @@ dependencies {
     implementation project(':module-service')
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'com.github.java-json-tools:json-patch:1.13'
-//    implementation "org.springdoc:springdoc-openapi-ui:$openApiVersion"
-    implementation "io.springfox:springfox-boot-starter:$springFoxVersion"
+    implementation "org.springdoc:springdoc-openapi-ui:$openApiVersion"
     testImplementation 'io.rest-assured:spring-mock-mvc'
 }

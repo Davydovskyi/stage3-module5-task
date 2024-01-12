@@ -8,10 +8,10 @@ import com.mjc.school.service.CommentService;
 import com.mjc.school.service.dto.comment.CommentDtoRequest;
 import com.mjc.school.service.dto.comment.CommentDtoResponse;
 import com.mjc.school.service.validator.group.CreateAction;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +26,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/comments")
-@Api("Operations for creating, updating, retrieving and deleting comment in the application")
+@Tag(name = "Comments", description = "Operations for creating, updating, retrieving and deleting comment in the application")
 public class CommentRestController implements CommentController {
 
     private final CommentService commentService;
@@ -34,12 +34,12 @@ public class CommentRestController implements CommentController {
 
     @GetMapping
     @Override
-    @ApiOperation(value = "View all comments", response = List.class)
+    @Operation(summary = "View all comments")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved all comments"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 500, message = "Application failed to process the request")}
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved all comments"),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "500", description = "Application failed to process the request")}
     )
     public List<CommentDtoResponse> readAll(Pageable pageable) {
         return commentService.readAll(pageable);
@@ -47,13 +47,13 @@ public class CommentRestController implements CommentController {
 
     @GetMapping("/{id}")
     @Override
-    @ApiOperation(value = "Retrieve specific comment with the supplied id", response = CommentDtoResponse.class)
+    @Operation(summary = "Retrieve specific comment with the supplied id")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved the comment with the supplied id"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
-            @ApiResponse(code = 500, message = "Application failed to process the request")}
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the comment with the supplied id"),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "404", description = "The resource you were trying to reach is not found"),
+            @ApiResponse(responseCode = "500", description = "Application failed to process the request")}
     )
     public CommentDtoResponse readById(@PathVariable Long id) {
         return commentService.readById(id)
@@ -63,13 +63,13 @@ public class CommentRestController implements CommentController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Override
-    @ApiOperation(value = "Create a comment", response = CommentDtoResponse.class)
+    @Operation(summary = "Create a comment")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully created a comment"),
-            @ApiResponse(code = 400, message = "The request parameters are invalid"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 500, message = "Application failed to process the request")}
+            @ApiResponse(responseCode = "201", description = "Successfully created a comment"),
+            @ApiResponse(responseCode = "400", description = "The request parameters are invalid"),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "500", description = "Application failed to process the request")}
     )
     public CommentDtoResponse create(@RequestBody @Validated({CreateAction.class, Default.class}) CommentDtoRequest createRequest) {
         return commentService.create(createRequest);
@@ -77,14 +77,14 @@ public class CommentRestController implements CommentController {
 
     @Override
     @PutMapping("/{id}")
-    @ApiOperation(value = "Update comment information", response = CommentDtoResponse.class)
+    @Operation(summary = "Update comment information")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully updated comment information"),
-            @ApiResponse(code = 400, message = "The request parameters are invalid"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
-            @ApiResponse(code = 500, message = "Application failed to process the request")}
+            @ApiResponse(responseCode = "200", description = "Successfully updated comment information"),
+            @ApiResponse(responseCode = "400", description = "The request parameters are invalid"),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "404", description = "The resource you were trying to reach is not found"),
+            @ApiResponse(responseCode = "500", description = "Application failed to process the request")}
     )
     public CommentDtoResponse update(@PathVariable Long id,
                                      @RequestBody @Validated CommentDtoRequest updateRequest) {
@@ -94,13 +94,13 @@ public class CommentRestController implements CommentController {
 
     @PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
     @Override
-    @ApiOperation(value = "Update comment specific information", response = CommentDtoResponse.class)
+    @Operation(summary = "Update comment specific information")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully updated comment information"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
-            @ApiResponse(code = 500, message = "Application failed to process the request")}
+            @ApiResponse(responseCode = "200", description = "Successfully updated comment information"),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "404", description = "The resource you were trying to reach is not found"),
+            @ApiResponse(responseCode = "500", description = "Application failed to process the request")}
     )
     public CommentDtoResponse patch(@PathVariable Long id,
                                     @RequestBody JsonPatch patch) {
@@ -115,13 +115,13 @@ public class CommentRestController implements CommentController {
     @Override
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ApiOperation(value = "Deletes specific comment with the supplied id")
+    @Operation(summary = "Deletes specific comment with the supplied id")
     @ApiResponses(value = {
-            @ApiResponse(code = 204, message = "Successfully deletes the specific comment"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
-            @ApiResponse(code = 500, message = "Application failed to process the request")}
+            @ApiResponse(responseCode = "204", description = "Successfully deletes the specific comment"),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "404", description = "The resource you were trying to reach is not found"),
+            @ApiResponse(responseCode = "500", description = "Application failed to process the request")}
     )
     public void deleteById(@PathVariable Long id) {
         commentService.deleteById(id);
